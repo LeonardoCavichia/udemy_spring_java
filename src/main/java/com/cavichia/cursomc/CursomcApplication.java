@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.cavichia.cursomc.domain.Categoria;
 import com.cavichia.cursomc.domain.Cidade;
+import com.cavichia.cursomc.domain.Cliente;
+import com.cavichia.cursomc.domain.Endereco;
 import com.cavichia.cursomc.domain.Estado;
 import com.cavichia.cursomc.domain.Produto;
+import com.cavichia.cursomc.domain.enums.TipoCliente;
 import com.cavichia.cursomc.repositories.CategoriaRepository;
 import com.cavichia.cursomc.repositories.CidadeRepository;
+import com.cavichia.cursomc.repositories.ClienteRepository;
+import com.cavichia.cursomc.repositories.EnderecoRepository;
 import com.cavichia.cursomc.repositories.EstadoRepository;
 import com.cavichia.cursomc.repositories.ProdutoRepository;
 
@@ -31,6 +36,16 @@ public class CursomcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -64,11 +79,25 @@ public class CursomcApplication implements CommandLineRunner {
 		est2.getCidades().addAll(Arrays.asList(c2,c3));
 		
 		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("98745203","78542136"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "jardim", "38220034", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+
+		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		
+		
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
 		
 		estadoRepository.saveAll(Arrays.asList(est1,est2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
+		
+
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		
 		
 	}
 
